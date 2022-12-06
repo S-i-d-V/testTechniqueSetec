@@ -72,7 +72,6 @@ int     main(){
             }
             //DISPLAY LIST
             else if (prompt == "display"){
-                std::cout << "Nombres de livres: " << lib.getNbBooks() << std::endl;
                 lib.displayBooks();
             }
         }
@@ -93,6 +92,8 @@ int     main(){
                 std::cin >> name;
                 std::cout << "What's the firstname of the suscriber ?" << std::endl;
                 std::cin >> firstName;
+
+                Suscriber element(1, name, firstName);
             }
             else if (prompt == "delete"){
                 int id;
@@ -103,7 +104,7 @@ int     main(){
             }
             //DISPLAY LIST
             else if (prompt == "display"){
-                std::cout << "Nombres de abonnes: " << lib.getNbSuscribers() << std::endl;
+                std::cout << "DISPLAY" << std::endl;
                 lib.displaySuscribers();
             }
             //BORROW/RETURN

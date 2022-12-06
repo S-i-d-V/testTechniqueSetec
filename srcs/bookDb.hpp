@@ -53,10 +53,8 @@ class BookDb{
 
         //Print the content of the table
         static int printCallback(void* data, int argc, char** argv, char** azColName){
-            int i;
-            fprintf(stderr, "%s: ", (const char*)data);
-
-            for (i = 0; i < argc; i++) {
+            (void)data;
+            for (int i = 0; i < argc; i++) {
                 printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
             }
 
@@ -85,7 +83,7 @@ class BookDb{
                         std::cerr << "Error inserting element in BookDb" << std::endl;
                 }
             }
-            this->printLines();
+            //this->printLines();
             return;
         }
 
@@ -106,7 +104,7 @@ class BookDb{
 
         //Print all lines in the table
         void    printLines(){
-            std::string query = "SELECT COUNT(*) from SUSCRIBER;";
+            std::string query = "SELECT * FROM BOOK;";
 
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
         }

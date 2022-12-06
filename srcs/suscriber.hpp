@@ -4,6 +4,7 @@
 #include <string>
 
 class Suscriber{
+    
     public:
         int id;
 

@@ -46,10 +46,9 @@ class SuscriberDb{
 
         //Print the content of the table
         static int printCallback(void* data, int argc, char** argv, char** azColName){
-            int i;
-            fprintf(stderr, "%s: ", (const char*)data);
+            (void)data;
 
-            for (i = 0; i < argc; i++) {
+            for (int i = 0; i < argc; i++) {
                 printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
             }
 
@@ -78,7 +77,7 @@ class SuscriberDb{
                         std::cerr << "Error inserting element in SuscriberDb" << std::endl;
                 }
             }
-            this->printLines();
+            //this->printLines();
             return;
         }
 
@@ -99,7 +98,7 @@ class SuscriberDb{
 
         //Print all lines in the table
         void    printLines(){
-            std::string query = "SELECT COUNT(*) from SUSCRIBER;";
+            std::string query = "SELECT * FROM SUSCRIBER;";
 
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
         }

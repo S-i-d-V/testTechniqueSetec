@@ -4,6 +4,7 @@
 #include <string>
 
 class Book{
+    
     public:
         int id;
         std::string isbn;

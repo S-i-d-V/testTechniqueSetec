@@ -41,7 +41,8 @@ class BookDb{
             return (exit);
         }
 
-        static int callback(void *count, int argc, char **argv, char **azColName) {
+        //Count the number of lines in the table
+        static int countCallback(void *count, int argc, char **argv, char **azColName) {
             (void)argc;
             (void)argv;
             (void)azColName;
@@ -50,7 +51,21 @@ class BookDb{
             return 1;
         }
 
+        //Print the content of the table
+        static int printCallback(void* data, int argc, char** argv, char** azColName){
+            int i;
+            fprintf(stderr, "%s: ", (const char*)data);
+
+            for (i = 0; i < argc; i++) {
+                printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+            }
+
+            printf("\n");
+            return 0;
+        }
+
     public:
+    //Constructors
         BookDb(){
             this->DB = openDb();
             this->createTable();
@@ -60,35 +75,44 @@ class BookDb{
         BookDb(std::string const &path){
             this->DB = openDb();
             this->createTable();
-
-            //Count lines
-            std::string query = "SELECT COUNT(*) from BOOK;";
-            int count = 0;
-            sqlite3_exec(this->DB, query.c_str(), this->callback, &count, NULL);
+            int count = this->getNbLines();
 
             if (count == 0){
                 std::vector<Book> books = importBooksCSV(path);
 
-                std::cout << "Import " << books.size() << " books from CSV into DB" << std::endl;
                 for (std::size_t i = 0; i < books.size(); i++){
                     if (this->insertElement(books[i]) == -1)
                         std::cerr << "Error inserting element in BookDb" << std::endl;
-                    else
-                        std::cerr << "Succesfully inserted element in BookDb" << std::endl;
                 }
             }
-            
+            this->printLines();
             return;
         }
 
+        //Destructor
         ~BookDb(){
             sqlite3_close(this->DB);
             return;
         }
 
+        //Return the number of lines in the table
+        int     getNbLines(){
+            int count = 0;
+            std::string query = "SELECT COUNT(*) from BOOK;";
+
+            sqlite3_exec(this->DB, query.c_str(), this->countCallback, &count, NULL);
+            return (count);
+        }
+
+        //Print all lines in the table
+        void    printLines(){
+            std::string query = "SELECT COUNT(*) from SUSCRIBER;";
+
+            sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
+        }
+
         //Insert a book
         int     insertElement(Book element){
-            char* messaggeError;
             std::string sqlLine("INSERT INTO BOOK VALUES(" +
                                 std::to_string(element.id) + ", '" +
                                 element.isbn + "', '" +
@@ -101,11 +125,9 @@ class BookDb{
                                 element.coAuthorFirstname + "', '" +
                                 element.coAuthorJob + "', '" +
                                 element.editor + "');");
-            int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, &messaggeError);
+            int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
 
             if (exit != SQLITE_OK){
-                std::cout << "id : " << element.id << "| error = " << messaggeError << std::endl;
-                sqlite3_free(messaggeError);
                 return (-1);
             }
             return (0);

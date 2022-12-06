@@ -17,7 +17,7 @@ SRCS = srcs/book.hpp \
 		srcs/suscriberDb.hpp \
 		srcs/utils.hpp
 MAIN = main.cpp
-DB = books.db suscribers.db
+DB = databases/books.db databases/suscribers.db
 
 #ALIASES
 G = g++

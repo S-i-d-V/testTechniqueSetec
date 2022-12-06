@@ -5,9 +5,9 @@
 int     main(){
     Library lib("CSV/livres.csv", "CSV/abonnes.csv");
 
-    std::cout << "=========================" << std::endl;
-    std::cout << "=Welcome to LibManager !=" << std::endl;
-    std::cout << "=========================" << std::endl << std::endl;
+    std::cout << "========================================================================================================================" << std::endl;
+    std::cout << "                                                 Welcome to LibManager!                                                 " << std::endl;
+    std::cout << "========================================================================================================================" << std::endl << std::endl;
     //INTERFACE LOOP
     while (1){
         std::string prompt;

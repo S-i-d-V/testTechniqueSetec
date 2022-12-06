@@ -4,6 +4,7 @@
 #include <sqlite3.h>
 #include "csvParser.hpp"
 #include <iostream>
+#include <iomanip>
 
 class SuscriberDb{
     private:
@@ -49,10 +50,14 @@ class SuscriberDb{
             (void)data;
 
             for (int i = 0; i < argc; i++) {
-                printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+                std::cout << std::left << std::setw(19) << azColName[i]; 
+                std::cout << " = ";
+                std::cout << std::right << std::setprecision(108) << argv[i];
+                if (i != argc - 1)
+                    std::cout << std::endl;
             }
 
-            printf("\n");
+            std::cout << "========================================================================================================================" << std::endl;
             return 0;
         }
 
@@ -77,7 +82,6 @@ class SuscriberDb{
                         std::cerr << "Error inserting element in SuscriberDb" << std::endl;
                 }
             }
-            //this->printLines();
             return;
         }
 
@@ -100,6 +104,8 @@ class SuscriberDb{
         void    printLines(){
             std::string query = "SELECT * FROM SUSCRIBER;";
 
+            if (this->getNbLines() != 0)
+                std::cout << "========================================================================================================================" << std::endl;
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
         }
 

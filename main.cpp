@@ -15,6 +15,7 @@ int     main(){
         std::cout << "Type the number of the chosen menu:" << std::endl;
         std::cout << "1. Books menu" << std::endl;
         std::cout << "2. Subscribers menu" << std::endl;
+        std::cout << "3. Exit" << std::endl;
         std::cin >> prompt;
         std::cout << std::endl;
         system("clear");
@@ -206,8 +207,7 @@ int     main(){
                 system("clear");
             }
         }
-        //EXIT
-        else if (prompt == "exit")
+        else if (prompt == "3")
             return (0);
     }
     return (0);

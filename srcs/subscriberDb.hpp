@@ -128,7 +128,7 @@ class SubscriberDb{
 
             if (exit != SQLITE_OK)
                 return (-1);
-            return (id);
+            return (0);
         }
 
 };

@@ -162,7 +162,7 @@ class BookDb{
 
             if (exit != SQLITE_OK)
                 return (-1);
-            return (id);
+            return (0);
         }
 
         //Borrow/Return a book

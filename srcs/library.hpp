@@ -27,12 +27,12 @@ class Library {
         //Books
         void    addBook(Book book){
             if (this->books.insertElement(book) == -1)
-                std::cerr << "Couldn't insert this element" << std::endl;
+                throw CannotAddBook();
         }
 
         void    deleteBook(int id){
             if (this->books.deleteElement(id) == -1)
-                std::cerr << "Couldn't delete this element" << std::endl;
+                throw CannotDeleteBook();
         }
 
         void    displayFreeBooks(){
@@ -50,12 +50,12 @@ class Library {
         //Subscribers
         void    addSubscriber(Subscriber subscriber){
             if (this->subscribers.insertElement(subscriber) == -1)
-                std::cerr << "Couldn't insert this element" << std::endl;
+                throw CannotAddSubscriber();
         }
 
         void    deleteSubscriber(int id){
             if (this->subscribers.deleteElement(id) == -1)
-                std::cerr << "Couldn't delete this element" << std::endl;
+                throw CannotDeleteSubscriber();
         }
 
         void    displaySubscribers(){
@@ -69,13 +69,52 @@ class Library {
         //Book borrowing
         void    borrowBook(int bookId, int subscriberId){
             if (this->books.borrowBook(bookId, subscriberId) == -1)
-                std::cerr << "Couldn't borrow the book by this subscriber" << std::endl;
+                throw CannotBorrowBook();
         }
 
         void    returnBook(int bookId){
             if (this->books.returnBook(bookId) == -1)
-                std::cerr << "Couldn't return this book" << std::endl;
+                throw CannotReturnBook();
         }
+
+        //BOOK EXCEPTIONS
+        class CannotAddBook : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't add this book, please check is the ID is unique");
+            }
+		};
+
+        class CannotDeleteBook : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't delete this book, please check is the ID exist");
+            }
+		};
+
+        class CannotReturnBook : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't return this book, please check if the book is not already free to borrow");
+            }
+		};
+
+        //SUBSCRIBERS EXCEPTIONS
+        class CannotAddSubscriber : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't add this subscriber, please check is the ID is unique");
+            }
+		};
+
+        class CannotDeleteSubscriber : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't delete this subscriber, please check is the ID exist");
+            }
+		};
+
+        class CannotBorrowBook : public std::exception{
+			const char* what() const throw(){
+                return ("Couldn't borrow this book, please check if the book is not already borrowed");
+            }
+		};
+
 };
 
 #endif

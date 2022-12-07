@@ -55,7 +55,8 @@ std::vector<Book>   importBooksCSV( std::string const &path){
             tokenizedLine[7],
             tokenizedLine[8],
             tokenizedLine[9],
-            tokenizedLine[10]
+            tokenizedLine[10],
+            ":FREE:"
         );
         books.push_back(elem);
     }

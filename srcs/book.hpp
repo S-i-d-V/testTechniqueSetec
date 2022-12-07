@@ -4,7 +4,7 @@
 #include <string>
 
 class Book{
-    
+
     public:
         int id;
         std::string isbn;
@@ -22,6 +22,8 @@ class Book{
 
         std::string editor;
 
+        std::string borrower;
+
         Book(
             int id,
             std::string const &isbn,
@@ -37,7 +39,8 @@ class Book{
             std::string const &coAuthorFirstname,
             std::string const &coAuthorJob,
 
-            std::string const &editor
+            std::string const &editor,
+            std::string const &borrower
         ){
             this->id = id;
             this->isbn = isbn;
@@ -54,6 +57,8 @@ class Book{
             this->coAuthorJob = coAuthorJob;
 
             this->editor = editor;
+
+            this->borrower = borrower;
         }
 
         Book(Book const &src){
@@ -77,6 +82,7 @@ class Book{
             this->coAuthorJob = rhs.coAuthorJob;
 
             this->editor = rhs.editor;
+            this->borrower = rhs.borrower;
             return (*this);
         }
 };

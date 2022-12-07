@@ -35,12 +35,24 @@ class Library {
                 std::cerr << "Couldn't delete this element" << std::endl;
         }
 
-        void    displayBooks(){
-            this->books.printLines();
+        void    displayFreeBooks(){
+            this->books.printLines("free");
+        }
+
+        void    displayBorrowedBooks(){
+            this->books.printLines("borrowed");
+        }
+
+        int     getNbFreeBooks(){
+            return (this->books.getNbLines("free"));
+        }
+
+        int     getNbBorrowedBooks(){
+            return (this->books.getNbLines("borrowed"));
         }
 
         int     getNbBooks(){
-            return (this->books.getNbLines());
+            return (this->books.getNbLines("borrowed") + this->books.getNbLines("free"));
         }
 
         //Subscribers

@@ -33,7 +33,8 @@ class BookDb{
                                          "CO_AUTHOR_NAME       TEXT  NOT NULL, "
                                          "CO_AUTHOR_FIRSTNAME  TEXT  NOT NULL, "
                                          "CO_AUTHOR_JOB        TEXT  NOT NULL, "
-                                         "EDITOR               TEXT  NOT NULL); ";
+                                         "EDITOR               TEXT  NOT NULL, "
+                                         "BORROWER             TEXT  NOT NULL); ";
             int exit = sqlite3_exec(this->DB, sqlCreateTable.c_str(), NULL, 0, NULL);
 
             if (exit != SQLITE_OK)
@@ -42,7 +43,16 @@ class BookDb{
         }
 
         //Count the number of lines in the table
-        static int countCallback(void *count, int argc, char **argv, char **azColName) {
+        static int countFreeCallback(void *count, int argc, char **argv, char **azColName) {
+            (void)argc;
+            (void)argv;
+            (void)azColName;
+            int *c = (int *)count;
+            *c = std::atoi(argv[0]);
+            return 1;
+        }
+
+        static int countBorrowedCallback(void *count, int argc, char **argv, char **azColName) {
             (void)argc;
             (void)argv;
             (void)azColName;
@@ -52,7 +62,19 @@ class BookDb{
         }
 
         //Print the content of the table
-        static int printCallback(void* data, int argc, char** argv, char** azColName){
+        static int printFreeCallback(void* data, int argc, char** argv, char** azColName){
+            (void)data;
+            for (int i = 0; i < argc; i++) {
+                std::cout << std::left << std::setw(19) << azColName[i]; 
+                std::cout << " = ";
+                std::cout << std::right << std::setprecision(108) << argv[i];
+                std::cout << std::endl;
+            }
+            std::cout << "========================================================================================================================" << std::endl;
+            return 0;
+        }
+
+        static int printBorrowedCallback(void* data, int argc, char** argv, char** azColName){
             (void)data;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
@@ -75,7 +97,7 @@ class BookDb{
         BookDb(std::string const &path){
             this->DB = openDb();
             this->createTable();
-            int count = this->getNbLines();
+            int count = this->getNbLines("free");
 
             if (count == 0){
                 std::vector<Book> books = importBooksCSV(path);
@@ -84,7 +106,6 @@ class BookDb{
                     if (this->insertElement(books[i]) == -1)
                         std::cerr << "Error inserting element in BookDb" << std::endl;
                 }
-                //this->printLines();
             }
             return;
         }
@@ -96,22 +117,32 @@ class BookDb{
         }
 
         //Return the number of lines in the table
-        int     getNbLines(){
+        int     getNbLines(std::string const &type){
             int count = 0;
-            std::string query = "SELECT COUNT(*) from BOOK;";
+            std::string query;
+            query = "SELECT COUNT(*) from BOOK;";
 
-            sqlite3_exec(this->DB, query.c_str(), this->countCallback, &count, NULL);
+            if (type == "free")
+                sqlite3_exec(this->DB, query.c_str(), this->countFreeCallback, &count, NULL);
+            else if (type == "borrowed")
+                sqlite3_exec(this->DB, query.c_str(), this->countBorrowedCallback, &count, NULL);
             return (count);
         }
 
         //Print all lines in the table
-        void    printLines(){
+        void    printLines(std::string const &type){
             std::string query = "SELECT * FROM BOOK;";
 
             std::cout << "========================================================================================================================" << std::endl;
-            std::cout << "Number of books: " << this->getNbLines() << std::endl;
+            if (type == "free")
+                std::cout << "Number of free books: " << this->getNbLines("free") << std::endl;
+            else if (type == "borrowed")
+                std::cout << "Number of borrowed books: " << this->getNbLines("borrowed") << std::endl;
             std::cout << "========================================================================================================================" << std::endl;
-            sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
+            if (type == "free")
+                sqlite3_exec(this->DB, query.c_str(), this->printFreeCallback, 0, NULL);
+            else if (type == "borrowed")
+                sqlite3_exec(this->DB, query.c_str(), this->printBorrowedCallback, 0, NULL);
         }
 
         //Insert a book
@@ -127,7 +158,8 @@ class BookDb{
                                 element.coAuthorName + "', '" +
                                 element.coAuthorFirstname + "', '" +
                                 element.coAuthorJob + "', '" +
-                                element.editor + "');");
+                                element.editor + "', '" +
+                                element.borrower + "');");
             int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
 
             if (exit != SQLITE_OK){

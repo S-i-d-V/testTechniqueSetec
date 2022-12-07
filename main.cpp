@@ -76,7 +76,8 @@ int     main(){
                     coAuthourName,
                     coAuthourFirstname,
                     coAuthourJob,
-                    editor
+                    editor,
+                    ":FREE:"
                 );
                 lib.addBook(element);
             }
@@ -90,7 +91,14 @@ int     main(){
             }
             //DISPLAY LIST
             else if (prompt == "display"){
-                lib.displayBooks();
+                std::cout << "What books do you want to display ?" << std::endl;
+                std::cout << "<free> or <borrowed>" << std::endl;
+                std::cin >> prompt;
+
+                if (prompt == "free")
+                    lib.displayFreeBooks();
+                else if (prompt == "borrowed")
+                    lib.displayBorrowedBooks();
             }
         }
         //SUBSCRIBERS MENU

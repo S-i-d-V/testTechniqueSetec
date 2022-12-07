@@ -1,14 +1,14 @@
-### How to build ?
+# How to build ?
 To build the program, type :
 ```make```
 
-### How to use ?
+# How to use ?
 Launch the program with this command :
 ```./library```
 Then, you open the console interface with different choices.
 
-### Features :
-# Books :
+# Features :
+### Books :
 <ul>
     <li>Add a book</li>
     <li>Delete a book</li>
@@ -17,7 +17,7 @@ Then, you open the console interface with different choices.
     <li>Return a borrowed book</li>
 </ul>
 
-# Subscribers :
+### Subscribers :
 <ul>
     <li>Add a subscriber</li>
     <li>Delete a subscriber</li>

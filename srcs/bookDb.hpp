@@ -43,27 +43,12 @@ class BookDb{
         }
 
         //Count the number of lines in the table
-        static int countFreeCallback(void *count, int argc, char **argv, char **azColName) {
+        static int countCallback(void *count, int argc, char **argv, char **azColName) {
+            (void)argc;
+            (void)argv;
             (void)azColName;
-            if (argc != 12)
-                return 1;
-            else if (strcmp(argv[11], ":FREE:") == 0){
-                int *c = (int *)count;
-                *c = *c + 1;
-                return 1;
-            }
-            return 1;
-        }
-
-        static int countBorrowedCallback(void *count, int argc, char **argv, char **azColName) {
-            (void)azColName;
-            if (argc != 12)
-                return 1;
-            else if (strcmp(argv[11], ":FREE:") != 0){
-                int *c = (int *)count;
-                *c = *c + 1;
-                return 1;
-            }
+            int *c = (int *)count;
+            *c = std::atoi(argv[0]);
             return 1;
         }
 
@@ -72,6 +57,7 @@ class BookDb{
             (void)data;
             if (argc != 12 || strcmp(argv[11], ":FREE:") != 0)
                 return 0;
+            (void)azColName;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
@@ -107,7 +93,7 @@ class BookDb{
         BookDb(std::string const &path){
             this->DB = openDb();
             this->createTable();
-            int count = this->getNbLines("free");
+            int count = this->getNbLines();
 
             if (count == 0){
                 std::vector<Book> books = importBooksCSV(path);
@@ -127,15 +113,11 @@ class BookDb{
         }
 
         //Return the number of lines in the table
-        int     getNbLines(std::string const &type){
+        int     getNbLines(){
             int count = 0;
-            std::string query;
-            query = "SELECT COUNT(*) from BOOK;";
+            std::string query = "SELECT COUNT(*) from BOOK;";
 
-            if (type == "free")
-                sqlite3_exec(this->DB, query.c_str(), this->countFreeCallback, &count, NULL);
-            else if (type == "borrowed")
-                sqlite3_exec(this->DB, query.c_str(), this->countBorrowedCallback, &count, NULL);
+            sqlite3_exec(this->DB, query.c_str(), this->countCallback, &count, NULL);
             return (count);
         }
 
@@ -143,11 +125,6 @@ class BookDb{
         void    printLines(std::string const &type){
             std::string query = "SELECT * FROM BOOK;";
 
-            std::cout << "========================================================================================================================" << std::endl;
-            if (type == "free")
-                std::cout << "Number of free books: " << this->getNbLines("free") << std::endl;
-            else if (type == "borrowed")
-                std::cout << "Number of borrowed books: " << this->getNbLines("borrowed") << std::endl;
             std::cout << "========================================================================================================================" << std::endl;
             if (type == "free")
                 sqlite3_exec(this->DB, query.c_str(), this->printFreeCallback, 0, NULL);

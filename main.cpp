@@ -12,20 +12,27 @@ int     main(){
     while (1){
         std::string prompt;
 
-        std::cout << "Select a menu :" << std::endl;
-        std::cout << "<books> or <subscribers>" << std::endl;
+        std::cout << "Type the number of the chosen menu:" << std::endl;
+        std::cout << "1. Books menu" << std::endl;
+        std::cout << "2. Subscribers menu" << std::endl;
         std::cin >> prompt;
         std::cout << std::endl;
+        system("clear");
 
         //BOOKS MENU
-        if (prompt == "books"){
-            std::cout << "Select an action :" << std::endl;
-            std::cout << "<add> or <delete> or <display>" << std::endl;
+        if (prompt == "1"){
+            std::cout << "Type the number of the chosen action :" << std::endl;
+            std::cout << "1. Add a book" << std::endl;
+            std::cout << "2. Delete a book" << std::endl;
+            std::cout << "3. Display free books" << std::endl;
+            std::cout << "4. Display borrowed books " << std::endl;
+            std::cout << "5. Return a book " << std::endl;
             std::cin >> prompt;
             std::cout << std::endl;
+            system("clear");
 
-            //MANAGE LIST
-            if (prompt == "add"){
+            //ADD
+            if (prompt == "1"){
                 int id;
                 std::string isbn;
                 std::string title;
@@ -79,37 +86,65 @@ int     main(){
                     editor,
                     ":FREE:"
                 );
-                lib.addBook(element);
+                try {
+                    lib.addBook(element);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                system("clear");
+                std::cout << "Book succesfully added" << std::endl << std::endl;
             }
-            else if (prompt == "delete"){
+            //DELETE
+            else if (prompt == "2"){
                 int id;
 
                 std::cout << "Which book do you want to delete ? (id)" << std::endl;
                 std::cin >> id;
 
-                lib.deleteBook(id);
+                try {
+                    lib.deleteBook(id);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                system("clear");
+                std::cout << "Book succesfully deleted" << std::endl << std::endl;
             }
-            //DISPLAY LIST
-            else if (prompt == "display"){
-                std::cout << "What books do you want to display ?" << std::endl;
-                std::cout << "<free> or <borrowed>" << std::endl;
-                std::cin >> prompt;
+            //DISPLAY TABLE
+            else if (prompt == "3")
+                lib.displayFreeBooks();
+            else if (prompt == "4")
+                lib.displayBorrowedBooks();
+            //RETURN A BOOK
+            else if (prompt == "5"){
+                int bookId;
 
-                if (prompt == "free")
-                    lib.displayFreeBooks();
-                else if (prompt == "borrowed")
-                    lib.displayBorrowedBooks();
+                std::cout << "What is the id of the book to return ?" << std::endl;
+                std::cin >> bookId;
+
+                try {
+                    lib.returnBook(bookId);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                system("clear");
+                std::cout << "Book successfully returned" << std::endl << std::endl;
             }
         }
         //SUBSCRIBERS MENU
-        else if (prompt == "subscribers"){
-            std::cout << "Select an action :" << std::endl;
-            std::cout << "<add> or <delete> or <display> or <borrow> or <return>" << std::endl;
+        else if (prompt == "2"){
+            std::cout << "1. Add a subscriber" << std::endl;
+            std::cout << "2. Delete a subscriber" << std::endl;
+            std::cout << "3. Display subscribers" << std::endl;
+            std::cout << "4. Borrow a book" << std::endl;
             std::cin >> prompt;
             std::cout << std::endl;
+            system("clear");
 
-            //MANAGE LIST
-            if (prompt == "add"){
+            //ADD
+            if (prompt == "1"){
                 int id;
                 std::string name;
                 std::string firstName;
@@ -122,22 +157,37 @@ int     main(){
                 std::cin >> firstName;
 
                 Subscriber element(id, name, firstName);
-                lib.addSubscriber(element);
+
+                try {
+                    lib.addSubscriber(element);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                system("clear");
+                std::cout << "Subscriber successfully added" << std::endl << std::endl;
             }
-            else if (prompt == "delete"){
+            //DELETE
+            else if (prompt == "2"){
                 int id;
 
                 std::cout << "Which subscriber do you want to delete ? (id)" << std::endl;
                 std::cin >> id;
 
-                lib.deleteSubscriber(id);
+                try {
+                    lib.deleteSubscriber(id);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                system("clear");
+                std::cout << "Subscriber successfully deleted" << std::endl << std::endl;
             }
             //DISPLAY LIST
-            else if (prompt == "display"){
+            else if (prompt == "3")
                 lib.displaySubscribers();
-            }
-            //BORROW/RETURN
-            else if (prompt == "borrow"){
+            //BORROW A BOOK
+            else if (prompt == "4"){
                 int bookId;
                 int subscriberId;
 
@@ -146,15 +196,14 @@ int     main(){
                 std::cout << "Which subscriber want to borrow this book ? (subscriber id)" << std::endl;
                 std::cin >> subscriberId;
 
-                lib.borrowBook(bookId, subscriberId);
-            }
-            else if (prompt == "return"){
-                int bookId;
-
-                std::cout << "What is the id of the book to return ?" << std::endl;
-                std::cin >> bookId;
-
-                lib.returnBook(bookId);
+                try {
+                    lib.borrowBook(bookId, subscriberId);
+                }
+                catch (std::exception& e){
+                    std::cerr << "[Error]: " << e.what() << std::endl << std::endl;
+                }
+                std::cout << "Book successfully borrowed" << std::endl << std::endl;
+                system("clear");
             }
         }
         //EXIT

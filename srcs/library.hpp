@@ -43,16 +43,8 @@ class Library {
             this->books.printLines("borrowed");
         }
 
-        int     getNbFreeBooks(){
-            return (this->books.getNbLines("free"));
-        }
-
-        int     getNbBorrowedBooks(){
-            return (this->books.getNbLines("borrowed"));
-        }
-
         int     getNbBooks(){
-            return (this->books.getNbLines("borrowed") + this->books.getNbLines("free"));
+            return (this->books.getNbLines());
         }
 
         //Subscribers

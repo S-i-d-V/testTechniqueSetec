@@ -3,7 +3,7 @@
 
 #include "utils.hpp"
 #include "book.hpp"
-#include "suscriber.hpp"
+#include "subscriber.hpp"
 
 #include <fstream>
 #include <regex>
@@ -62,22 +62,22 @@ std::vector<Book>   importBooksCSV( std::string const &path){
     return (books);
 }
 
-std::vector<Suscriber>   importSuscribersCSV( std::string const &path){
+std::vector<Subscriber>   importSubscribersCSV( std::string const &path){
     std::vector<std::string> parsedCSV = retrieveDataset(path);
-    std::vector<Suscriber> suscribers;
+    std::vector<Subscriber> subscribers;
 
     for (std::size_t i = 1; i < parsedCSV.size(); i++){
         //Tokenize CSV lines
         std::vector<std::string> tokenizedLine = split(parsedCSV[i], ";");
-        Suscriber elem = Suscriber(
+        Subscriber elem = Subscriber(
             std::atoi(tokenizedLine[0].c_str()),
             tokenizedLine[1],
             tokenizedLine[2]
         );
 
-        suscribers.push_back(elem);
+        subscribers.push_back(elem);
     }
-    return (suscribers);
+    return (subscribers);
 }
 
 #endif

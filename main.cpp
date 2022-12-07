@@ -13,7 +13,7 @@ int     main(){
         std::string prompt;
 
         std::cout << "Select a menu :" << std::endl;
-        std::cout << "<books> or <suscribers>" << std::endl;
+        std::cout << "<books> or <subscribers>" << std::endl;
         std::cin >> prompt;
         std::cout << std::endl;
 
@@ -93,8 +93,8 @@ int     main(){
                 lib.displayBooks();
             }
         }
-        //SUSCRIBERS MENU
-        else if (prompt == "suscribers"){
+        //SUBSCRIBERS MENU
+        else if (prompt == "subscribers"){
             std::cout << "Select an action :" << std::endl;
             std::cout << "<add> or <delete> or <display>" << std::endl;
             std::cin >> prompt;
@@ -106,27 +106,27 @@ int     main(){
                 std::string name;
                 std::string firstName;
 
-                std::cout << "What's the id of the suscriber ?" << std::endl;
+                std::cout << "What's the id of the subscriber ?" << std::endl;
                 std::cin >> id;
-                std::cout << "What's the name of the suscriber ?" << std::endl;
+                std::cout << "What's the name of the subscriber ?" << std::endl;
                 std::cin >> name;
-                std::cout << "What's the firstname of the suscriber ?" << std::endl;
+                std::cout << "What's the firstname of the subscriber ?" << std::endl;
                 std::cin >> firstName;
 
-                Suscriber element(id, name, firstName);
-                lib.addSuscriber(element);
+                Subscriber element(id, name, firstName);
+                lib.addSubscriber(element);
             }
             else if (prompt == "delete"){
                 int id;
 
-                std::cout << "Which suscriber do you want to delete ? (id)" << std::endl;
+                std::cout << "Which subscriber do you want to delete ? (id)" << std::endl;
                 std::cin >> id;
 
-                lib.deleteSuscriber(id);
+                lib.deleteSubscriber(id);
             }
             //DISPLAY LIST
             else if (prompt == "display"){
-                lib.displaySuscribers();
+                lib.displaySubscribers();
             }
             //BORROW/RETURN
             else if (prompt == "borrow"){

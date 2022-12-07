@@ -1,17 +1,17 @@
-#ifndef SUSCRIBER_HPP
-#define SUSCRIBER_HPP
+#ifndef SUBSCRIBER_HPP
+#define SUBSCRIBER_HPP
 
 #include <string>
 
-class Suscriber{
-    
+class Subscriber{
+
     public:
         int id;
 
         std::string name;
         std::string firstName;
 
-        Suscriber(
+        Subscriber(
             int id,
             std::string const &name,
             std::string const &firstName
@@ -21,12 +21,12 @@ class Suscriber{
             this->firstName = firstName;
         }
 
-        Suscriber(Suscriber const &src){
+        Subscriber(Subscriber const &src){
             *this = src;
             return;
         }
 
-        Suscriber&   operator=(Suscriber const &rhs){
+        Subscriber&   operator=(Subscriber const &rhs){
             this->id = rhs.id;
             this->name = rhs.name;
             this->firstName = rhs.firstName;

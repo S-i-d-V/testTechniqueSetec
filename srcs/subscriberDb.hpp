@@ -1,19 +1,19 @@
-#ifndef SUSCRIBERDB_HPP
-#define SUSCRIBERDB_HPP
+#ifndef SUBSCRIBERDB_HPP
+#define SUBSCRIBERDB_HPP
 
 #include <sqlite3.h>
 #include "csvParser.hpp"
 #include <iostream>
 #include <iomanip>
 
-class SuscriberDb{
+class SubscriberDb{
     private:
         sqlite3 *DB;
 
         //Open/Create DB
         sqlite3 *openDb(){
             sqlite3 *DB;
-            int exit = sqlite3_open("databases/suscribers.db", &DB);
+            int exit = sqlite3_open("databases/subscribers.db", &DB);
 
             if (exit) {
                 std::cerr << "Error open DB " << sqlite3_errmsg(DB) << std::endl;
@@ -24,7 +24,7 @@ class SuscriberDb{
 
         //CreateTable
         int createTable(){
-            std::string sqlCreateTable = "CREATE TABLE SUSCRIBER("
+            std::string sqlCreateTable = "CREATE TABLE SUBSCRIBER("
                                          "ID INT PRIMARY       KEY   NOT NULL, "
                                          "NAME                 TEXT  NOT NULL, "
                                          "FIRSTNAME            TEXT  NOT NULL); ";
@@ -47,15 +47,12 @@ class SuscriberDb{
 
         //Print the content of the table
         static int printCallback(void* data, int argc, char** argv, char** azColName){
-            std::cout << "Call of printCallback by printLines()" << std::endl;
-
             (void)data;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
                 std::cout << std::right << std::setprecision(108) << argv[i];
-                if (i != argc - 1)
-                    std::cout << std::endl;
+                std::cout << std::endl;
             }
             std::cout << "========================================================================================================================" << std::endl;
             return 0;
@@ -63,30 +60,30 @@ class SuscriberDb{
 
     public:
         //Constructors
-        SuscriberDb(){
+        SubscriberDb(){
             this->DB = openDb();
             this->createTable();
             return;
         }
 
-        SuscriberDb(std::string const &path){
+        SubscriberDb(std::string const &path){
             this->DB = openDb();
             this->createTable();
             int count = this->getNbLines();
 
             if (count == 0){
-                std::vector<Suscriber> suscribers = importSuscribersCSV(path);
+                std::vector<Subscriber> subscribers = importSubscribersCSV(path);
 
-                for (std::size_t i = 0; i < suscribers.size(); i++){
-                    if (this->insertElement(suscribers[i]) == -1)
-                        std::cerr << "Error inserting element in SuscriberDb" << std::endl;
+                for (std::size_t i = 0; i < subscribers.size(); i++){
+                    if (this->insertElement(subscribers[i]) == -1)
+                        std::cerr << "Error inserting element in SubscriberDb" << std::endl;
                 }
             }
             return;
         }
 
         //Destructor
-        ~SuscriberDb(){
+        ~SubscriberDb(){
             sqlite3_close(this->DB);
             return;
         }
@@ -94,7 +91,7 @@ class SuscriberDb{
         //Return the number of lines in the table
         int     getNbLines(){
             int count = 0;
-            std::string query = "SELECT COUNT(*) from SUSCRIBER;";
+            std::string query = "SELECT COUNT(*) from SUBSCRIBER;";
 
             sqlite3_exec(this->DB, query.c_str(), this->countCallback, &count, NULL);
             return (count);
@@ -102,18 +99,17 @@ class SuscriberDb{
 
         //Print all lines in the table
         void    printLines(){
-            std::cout << "Call of printLines by displaySuscribers()" << std::endl;
-            std::string query = "SELECT * FROM SUSCRIBER;";
+            std::string query = "SELECT * FROM SUBSCRIBER;";
 
             std::cout << "========================================================================================================================" << std::endl;
-            std::cout << "Number of suscribers: " << this->getNbLines() << std::endl;
+            std::cout << "Number of subscribers: " << this->getNbLines() << std::endl;
             std::cout << "========================================================================================================================" << std::endl;
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
         }
 
         //Insert a book
-        int     insertElement(Suscriber element){
-            std::string sqlLine("INSERT INTO SUSCRIBER VALUES(" +
+        int     insertElement(Subscriber element){
+            std::string sqlLine("INSERT INTO SUBSCRIBER VALUES(" +
                                 std::to_string(element.id) + ", '" +
                                 element.name + "', '" +
                                 element.firstName +  "');");
@@ -127,7 +123,7 @@ class SuscriberDb{
 
         //Delete a book
         int     deleteElement(int id){
-            std::string sqlLine("DELETE FROM SUSCRIBER WHERE ID = " + std::to_string(id) + ";");
+            std::string sqlLine("DELETE FROM SUBSCRIBER WHERE ID = " + std::to_string(id) + ";");
             int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
 
             if (exit != SQLITE_OK)

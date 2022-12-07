@@ -58,8 +58,7 @@ class BookDb{
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
                 std::cout << std::right << std::setprecision(108) << argv[i];
-                if (i != argc - 1)
-                    std::cout << std::endl;
+                std::cout << std::endl;
             }
             std::cout << "========================================================================================================================" << std::endl;
             return 0;
@@ -108,7 +107,7 @@ class BookDb{
         //Print all lines in the table
         void    printLines(){
             std::string query = "SELECT * FROM BOOK;";
-            
+
             std::cout << "========================================================================================================================" << std::endl;
             std::cout << "Number of books: " << this->getNbLines() << std::endl;
             std::cout << "========================================================================================================================" << std::endl;

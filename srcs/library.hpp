@@ -2,12 +2,12 @@
 #define LIBRARY_HPP
 
 #include "bookDb.hpp"
-#include "suscriberDb.hpp"
+#include "subscriberDb.hpp"
 
 class Library {
     private:
         BookDb books;
-        SuscriberDb suscribers;
+        SubscriberDb subscribers;
     public:
 
         //Default constructor
@@ -16,12 +16,7 @@ class Library {
         }
 
         //Constructor
-        Library(std::string const& booksPath, std::string const &suscribersPath){
-            this->books = BookDb(booksPath);
-            this->suscribers = SuscriberDb(suscribersPath);
-
-            this->books.printLines();
-            this->suscribers.printLines();
+        Library(std::string const& booksPath, std::string const &subscribersPath): books(BookDb(booksPath)), subscribers(SubscriberDb(subscribersPath)){
             return;
         }
 
@@ -48,24 +43,23 @@ class Library {
             return (this->books.getNbLines());
         }
 
-        //Suscribers
-        void    addSuscriber(Suscriber suscriber){
-            if (this->suscribers.insertElement(suscriber) == -1)
+        //Subscribers
+        void    addSubscriber(Subscriber subscriber){
+            if (this->subscribers.insertElement(subscriber) == -1)
                 std::cerr << "Couldn't insert this element" << std::endl;
         }
 
-        void    deleteSuscriber(int id){
-            std::cout << "I want to delete the user id " << id << std::endl;
-            if (this->suscribers.deleteElement(id) == -1)
+        void    deleteSubscriber(int id){
+            if (this->subscribers.deleteElement(id) == -1)
                 std::cerr << "Couldn't delete this element" << std::endl;
         }
 
-        void    displaySuscribers(){
-            this->suscribers.printLines();
+        void    displaySubscribers(){
+            this->subscribers.printLines();
         }
 
-        int     getNbSuscribers(){
-            return (this->suscribers.getNbLines());
+        int     getNbSubscribers(){
+            return (this->subscribers.getNbLines());
         }
 
         //Book borrowing

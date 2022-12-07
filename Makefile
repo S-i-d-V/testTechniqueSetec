@@ -13,11 +13,11 @@ SRCS = srcs/book.hpp \
 		srcs/bookDb.hpp \
 		srcs/csvParser.hpp \
 		srcs/library.hpp \
-		srcs/suscriber.hpp \
-		srcs/suscriberDb.hpp \
+		srcs/subscriber.hpp \
+		srcs/subscriberDb.hpp \
 		srcs/utils.hpp
 MAIN = main.cpp
-DB = databases/books.db databases/suscribers.db
+DB = databases/books.db databases/subscribers.db
 
 #ALIASES
 G = g++

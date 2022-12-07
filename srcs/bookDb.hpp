@@ -130,6 +130,7 @@ class BookDb{
                 sqlite3_exec(this->DB, query.c_str(), this->printFreeCallback, 0, NULL);
             else if (type == "borrowed")
                 sqlite3_exec(this->DB, query.c_str(), this->printBorrowedCallback, 0, NULL);
+            std::cout << std::endl;
         }
 
         //Insert a book
@@ -167,8 +168,6 @@ class BookDb{
 
         //Borrow/Return a book
         int    borrowBook(int bookId, int subscriberId){
-            //Check if book exist
-            //Modify book as used
             std::string sqlLine("UPDATE BOOK SET BORROWER_ID = '" + std::to_string(subscriberId) + "' WHERE ID = " + std::to_string(bookId));
             int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
 
@@ -179,10 +178,6 @@ class BookDb{
         }
 
         int    returnBook(int bookId){
-            (void)bookId;
-            //Check if book exist
-            //Check if book is borrowed by the user
-            //Modify book is free to borrow
             std::string sqlLine("UPDATE BOOK SET BORROWER_ID = ':FREE:' WHERE ID = " + std::to_string(bookId));
             int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
 
@@ -191,9 +186,6 @@ class BookDb{
             }
             return (0);
         }
-
-
-
 };
 
 #endif

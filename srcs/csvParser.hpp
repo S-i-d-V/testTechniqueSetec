@@ -4,7 +4,6 @@
 #include "utils.hpp"
 #include "book.hpp"
 #include "subscriber.hpp"
-
 #include <fstream>
 #include <regex>
 #include <algorithm>

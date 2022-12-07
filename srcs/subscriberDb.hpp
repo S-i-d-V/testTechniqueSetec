@@ -105,6 +105,7 @@ class SubscriberDb{
             std::cout << "Number of subscribers: " << this->getNbLines() << std::endl;
             std::cout << "========================================================================================================================" << std::endl;
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
+            std::cout << std::endl;
         }
 
         //Insert a book

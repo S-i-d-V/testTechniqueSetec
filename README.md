@@ -5,7 +5,6 @@ To build the program, type :
 # How to use ?
 Launch the program with this command :
 ```./library```
-Then, you open the console interface with different choices.
 
 # Features :
 ### Books :

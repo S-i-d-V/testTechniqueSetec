@@ -26,7 +26,7 @@ int     main(){
 
             //MANAGE LIST
             if (prompt == "add"){
-                int id;(void)id;
+                int id;
                 std::string isbn;
                 std::string title;
                 std::string desc;
@@ -38,6 +38,8 @@ int     main(){
                 std::string coAuthourJob;
                 std::string editor;
 
+                std::cout << "What's the id of the book ?" << std::endl;
+                std::cin >> id;
                 std::cout << "What's the ISBN of the book ?" << std::endl;
                 std::cin >> isbn;
 
@@ -62,12 +64,28 @@ int     main(){
 
                 std::cout << "What's the name of the editor ?" << std::endl;
                 std::cin >> editor;
+
+                Book element(
+                    id,
+                    isbn,
+                    title,
+                    desc,
+                    authorName,
+                    authorFirstname,
+                    authorJob,
+                    coAuthourName,
+                    coAuthourFirstname,
+                    coAuthourJob,
+                    editor
+                );
+                lib.addBook(element);
             }
             else if (prompt == "delete"){
                 int id;
 
                 std::cout << "Which book do you want to delete ? (id)" << std::endl;
                 std::cin >> id;
+
                 lib.deleteBook(id);
             }
             //DISPLAY LIST
@@ -84,27 +102,30 @@ int     main(){
 
             //MANAGE LIST
             if (prompt == "add"){
-                int id;(void)id;
+                int id;
                 std::string name;
                 std::string firstName;
 
+                std::cout << "What's the id of the suscriber ?" << std::endl;
+                std::cin >> id;
                 std::cout << "What's the name of the suscriber ?" << std::endl;
                 std::cin >> name;
                 std::cout << "What's the firstname of the suscriber ?" << std::endl;
                 std::cin >> firstName;
 
-                Suscriber element(1, name, firstName);
+                Suscriber element(id, name, firstName);
+                lib.addSuscriber(element);
             }
             else if (prompt == "delete"){
                 int id;
 
                 std::cout << "Which suscriber do you want to delete ? (id)" << std::endl;
                 std::cin >> id;
+
                 lib.deleteSuscriber(id);
             }
             //DISPLAY LIST
             else if (prompt == "display"){
-                std::cout << "DISPLAY" << std::endl;
                 lib.displaySuscribers();
             }
             //BORROW/RETURN

@@ -19,6 +19,9 @@ class Library {
         Library(std::string const& booksPath, std::string const &suscribersPath){
             this->books = BookDb(booksPath);
             this->suscribers = SuscriberDb(suscribersPath);
+
+            this->books.printLines();
+            this->suscribers.printLines();
             return;
         }
 
@@ -52,6 +55,7 @@ class Library {
         }
 
         void    deleteSuscriber(int id){
+            std::cout << "I want to delete the user id " << id << std::endl;
             if (this->suscribers.deleteElement(id) == -1)
                 std::cerr << "Couldn't delete this element" << std::endl;
         }

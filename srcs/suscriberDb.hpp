@@ -47,8 +47,9 @@ class SuscriberDb{
 
         //Print the content of the table
         static int printCallback(void* data, int argc, char** argv, char** azColName){
-            (void)data;
+            std::cout << "Call of printCallback by printLines()" << std::endl;
 
+            (void)data;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
@@ -56,7 +57,6 @@ class SuscriberDb{
                 if (i != argc - 1)
                     std::cout << std::endl;
             }
-
             std::cout << "========================================================================================================================" << std::endl;
             return 0;
         }
@@ -102,10 +102,12 @@ class SuscriberDb{
 
         //Print all lines in the table
         void    printLines(){
+            std::cout << "Call of printLines by displaySuscribers()" << std::endl;
             std::string query = "SELECT * FROM SUSCRIBER;";
 
-            if (this->getNbLines() != 0)
-                std::cout << "========================================================================================================================" << std::endl;
+            std::cout << "========================================================================================================================" << std::endl;
+            std::cout << "Number of suscribers: " << this->getNbLines() << std::endl;
+            std::cout << "========================================================================================================================" << std::endl;
             sqlite3_exec(this->DB, query.c_str(), this->printCallback, 0, NULL);
         }
 

@@ -21,7 +21,7 @@ DB = databases/books.db databases/suscribers.db
 
 #ALIASES
 G = g++
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -fsanitize=address -Wall -Wextra -Werror
 
 all: $(MAIN)
 	echo "$(BLUE)Compiling $(YELLOW)$(EXEC)$(BLUE) from $(YELLOW)$^$(BLUE) ..$(CLEAR)"

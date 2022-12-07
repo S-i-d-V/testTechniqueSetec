@@ -104,7 +104,7 @@ int     main(){
         //SUBSCRIBERS MENU
         else if (prompt == "subscribers"){
             std::cout << "Select an action :" << std::endl;
-            std::cout << "<add> or <delete> or <display>" << std::endl;
+            std::cout << "<add> or <delete> or <display> or <borrow> or <return>" << std::endl;
             std::cin >> prompt;
             std::cout << std::endl;
 
@@ -138,10 +138,23 @@ int     main(){
             }
             //BORROW/RETURN
             else if (prompt == "borrow"){
-                std::cout << "borrow" << std::endl;
+                int bookId;
+                int subscriberId;
+
+                std::cout << "Which book the subscriber want to borrow ? (book id)" << std::endl;
+                std::cin >> bookId;
+                std::cout << "Which subscriber want to borrow this book ? (subscriber id)" << std::endl;
+                std::cin >> subscriberId;
+
+                lib.borrowBook(bookId, subscriberId);
             }
             else if (prompt == "return"){
-                std::cout << "return" << std::endl;
+                int bookId;
+
+                std::cout << "What is the id of the book to return ?" << std::endl;
+                std::cin >> bookId;
+
+                lib.returnBook(bookId);
             }
         }
         //EXIT

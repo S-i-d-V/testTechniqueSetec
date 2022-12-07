@@ -75,15 +75,14 @@ class Library {
         }
 
         //Book borrowing
-        void    borrowBook(){
-            //Check if book exist
-            //Notify book as used
+        void    borrowBook(int bookId, int subscriberId){
+            if (this->books.borrowBook(bookId, subscriberId) == -1)
+                std::cerr << "Couldn't borrow the book by this subscriber" << std::endl;
         }
 
-        void    returnBook(){
-            //Check if book exist
-            //Check if book is borrowed by the user
-            //Notify book is free to borrow
+        void    returnBook(int bookId){
+            if (this->books.returnBook(bookId) == -1)
+                std::cerr << "Couldn't return this book" << std::endl;
         }
 };
 

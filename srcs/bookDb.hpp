@@ -34,7 +34,7 @@ class BookDb{
                                          "CO_AUTHOR_FIRSTNAME  TEXT  NOT NULL, "
                                          "CO_AUTHOR_JOB        TEXT  NOT NULL, "
                                          "EDITOR               TEXT  NOT NULL, "
-                                         "BORROWER             TEXT  NOT NULL); ";
+                                         "BORROWER_ID             TEXT  NOT NULL); ";
             int exit = sqlite3_exec(this->DB, sqlCreateTable.c_str(), NULL, 0, NULL);
 
             if (exit != SQLITE_OK)
@@ -187,6 +187,35 @@ class BookDb{
                 return (-1);
             return (id);
         }
+
+        //Borrow/Return a book
+        int    borrowBook(int bookId, int subscriberId){
+            //Check if book exist
+            //Modify book as used
+            std::string sqlLine("UPDATE BOOK SET BORROWER_ID = '" + std::to_string(subscriberId) + "' WHERE ID = " + std::to_string(bookId));
+            int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
+
+            if (exit != SQLITE_OK){
+                return (-1);
+            }
+            return (0);
+        }
+
+        int    returnBook(int bookId){
+            (void)bookId;
+            //Check if book exist
+            //Check if book is borrowed by the user
+            //Modify book is free to borrow
+            std::string sqlLine("UPDATE BOOK SET BORROWER_ID = ':FREE:' WHERE ID = " + std::to_string(bookId));
+            int exit = sqlite3_exec(this->DB, sqlLine.c_str(), NULL, 0, NULL);
+
+            if (exit != SQLITE_OK){
+                return (-1);
+            }
+            return (0);
+        }
+
+
 
 };
 

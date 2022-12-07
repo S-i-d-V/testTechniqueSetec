@@ -44,26 +44,34 @@ class BookDb{
 
         //Count the number of lines in the table
         static int countFreeCallback(void *count, int argc, char **argv, char **azColName) {
-            (void)argc;
-            (void)argv;
             (void)azColName;
-            int *c = (int *)count;
-            *c = std::atoi(argv[0]);
+            if (argc != 12)
+                return 1;
+            else if (strcmp(argv[11], ":FREE:") == 0){
+                int *c = (int *)count;
+                *c = *c + 1;
+                return 1;
+            }
             return 1;
         }
 
         static int countBorrowedCallback(void *count, int argc, char **argv, char **azColName) {
-            (void)argc;
-            (void)argv;
             (void)azColName;
-            int *c = (int *)count;
-            *c = std::atoi(argv[0]);
+            if (argc != 12)
+                return 1;
+            else if (strcmp(argv[11], ":FREE:") != 0){
+                int *c = (int *)count;
+                *c = *c + 1;
+                return 1;
+            }
             return 1;
         }
 
         //Print the content of the table
         static int printFreeCallback(void* data, int argc, char** argv, char** azColName){
             (void)data;
+            if (argc != 12 || strcmp(argv[11], ":FREE:") != 0)
+                return 0;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
@@ -76,6 +84,8 @@ class BookDb{
 
         static int printBorrowedCallback(void* data, int argc, char** argv, char** azColName){
             (void)data;
+            if (argc != 12 || strcmp(argv[11], ":FREE:") == 0)
+                return 0;
             for (int i = 0; i < argc; i++) {
                 std::cout << std::left << std::setw(19) << azColName[i]; 
                 std::cout << " = ";
